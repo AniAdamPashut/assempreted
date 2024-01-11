@@ -51,4 +51,17 @@ const std::unordered_map<std::string, std::function<void(State& , std::string)>>
     {"cmp", &cmp}
 };
 
+namespace syscalls {
+    void exit_syscall(State &state);
+
+    void write_syscall(State &state);
+};
+
+#define SYSCALL_AMOUNT 2
+
+const std::function<void(State &)> syscall_array[] = {
+    &syscalls::exit_syscall,
+    &syscalls::write_syscall,
+};
+
 #endif
