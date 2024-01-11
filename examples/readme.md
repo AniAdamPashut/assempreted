@@ -1,3 +1,3 @@
 # Some examples to runnable code
 
-There is documentation in form of comments
+## Each example has in-file documentation

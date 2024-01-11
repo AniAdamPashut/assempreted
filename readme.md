@@ -8,7 +8,12 @@ Those are the ax, bx, cx and dx registers <br>
 
 This is not an emulator (although I might implement one later) <br>
 
+**I made this in one day (like 3-4 hours). It doesnt have inline arithmetic support (or pointers). this just moves some integers around. yes i know it's trash but i made it so shush** <br>
 
+## To run:
+- `make init`
+- `make`
+- `./assembler ./examples/xxx.bass`
 
 ## opcodes implemented:
 - push, pop
