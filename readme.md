@@ -8,7 +8,9 @@ Those are the ax, bx, cx and dx registers <br>
 
 This is not an emulator (although I might implement one later) <br>
 
-**I made this in one day (like 3-4 hours). It doesnt have inline arithmetic support (or pointers). this just moves some integers around. yes i know it's trash but i made it so shush** <br>
+This works with a state class that holds the registers the stack and the program counter <br>
+
+**I made this in one day (like 3-4 hours). It doesn't have inline arithmetic support (or pointers). this just moves some integers around. yes i know it's trash but i made it so shush** <br>
 
 ## To run:
 - `make init`
@@ -29,4 +31,5 @@ This is not an emulator (although I might implement one later) <br>
 comments are inserted using `;`
 
 
-it never fails to amaze me how like 7 hours ago i thought it was undoable. look at this now <br>
+# Seems undoable like 7 hours ago lol
+

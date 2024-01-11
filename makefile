@@ -2,7 +2,7 @@
 CC = g++ -std=c++20
 SRC = ./src
 LANG = cpp
-MAIN_EXEC = assembler
+MAIN_EXEC = assempreter
 BUILD = ./build
 CFLAGS = -Iheaders -I$(BUILD)/libs/headers -fPIC
 LIBS = $(wildcard $(BUILD)/libs/objs/*.so)

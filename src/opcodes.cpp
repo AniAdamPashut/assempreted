@@ -285,7 +285,7 @@ void syscall(State &state, std::string line) {
         throw parse_error("INVALID SYSCALL NUMBER: " + state.registers["ax"]);
     }
  
-    syscall_array.at(state.registers["ax"]) (state);
+    syscall_array[state.registers["ax"]](state);
 } 
 
 void cmp(State &state, std::string line) {

@@ -13,7 +13,7 @@ void exit_syscall(State &state);
 
 void write_syscall(State &state);
 
-std::array<std::function<void(State &)>, SYSCALL_AMOUNT> syscall_array = {
+std::function<void(State &)> syscall_array[] = {
     &exit_syscall,
     &write_syscall,
 };

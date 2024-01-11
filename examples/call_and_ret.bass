@@ -18,6 +18,9 @@ syscall
 
 
 print_a:
+
+    call print_b
+    
     mov ax, 1
     mov bx, 97
     syscall
@@ -26,4 +29,12 @@ print_a:
     mov bx, 10
     syscall 
     
+    ret
+
+
+print_b:
+    mov ax, 1
+    mov bx, 98
+    syscall
+
     ret
