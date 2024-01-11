@@ -31,5 +31,5 @@ This works with a state class that holds the registers the stack and the program
 comments are inserted using `;`
 
 
-# Seems undoable like 7 hours ago lol
+# Seemed undoable like 7 hours ago lol
 
