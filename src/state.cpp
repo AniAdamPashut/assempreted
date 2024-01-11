@@ -3,6 +3,8 @@
 
 State::State() {
     this->stk = std::stack<int>();
+    this->call_stack = std::stack<int>();
+
     this->registers = {
         {"ax", 0},
         {"bx", 0},

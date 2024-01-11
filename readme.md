@@ -11,12 +11,17 @@ This is not an emulator (although I might implement one later) <br>
 
 
 ## opcodes implemented:
-- add, sub
 - push, pop
+- add, sub
 - inc, dec
 - jmp, je, cmp
-
-## Shit I will hopefully implement:
-- syscall
+- syscall - (exit, write) (only writes one char at a time)
 - call, ret 
 
+
+## comments
+
+comments are inserted using `;`
+
+
+it never fails to amaze me how like 7 hours ago i thought it was undoable. look at this now <br>

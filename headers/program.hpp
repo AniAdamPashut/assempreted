@@ -10,7 +10,7 @@ public:
     std::string filename;
     
     Program();
-    Program(std::string filename);
+    Program(const char *filename);
     ~Program();
     void parse();
 

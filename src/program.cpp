@@ -17,7 +17,7 @@ Program::Program() {
 
 }
 
-Program::Program(std::string filename) {
+Program::Program(const char * filename) {
     this->filename = filename;
     this->state = State();
 }
@@ -30,7 +30,6 @@ Program::parse() {
     if (!file.is_open()) {
         throw std::ios_base::failure("Couldn't open file: " + filename);
     }
-
     std::string line;
     while (std::getline(file, line)) 
     {   
@@ -47,16 +46,12 @@ Program::parse() {
         this->state.lines.push_back(line);
     }
 
-    std::cout << "Labels: \n";
-    for (auto &pair : this->state.label_map) {
-        std::cout << pair.first << "@ " << pair.second << "\n";
-    }
-
     while (this->state.pc < this->state.lines.size()) {
-        std::cout << this->state.lines[this->state.pc] << std::endl;
         execute(this->state.lines[this->state.pc]);
     } 
 
+
+    std::cout << "Register values: \n";
     for (auto &pair : this->state.registers) {
         std::cout << pair.first << ": " << pair.second << "\n";
     }

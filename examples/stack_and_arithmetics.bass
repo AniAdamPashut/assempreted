@@ -1,0 +1,18 @@
+push 19 ; push literal 19
+
+pop bx ; pop into bx (bx = 19)
+
+sub ax, ax ; init ax to 0
+add ax, bx ; add bx to ax (ax = 19)
+
+push ax ; push it to the stack 
+
+inc ax ; increment ax
+
+push ax ; push it into the stack again
+
+pop dx ; pop into dx (dx = 20)
+
+dec dx ; decrement dx (dx = 19)
+
+pop cx ; pop into cx (cx = 19)

@@ -1,0 +1,29 @@
+; This one demonstrate calls and returns
+; it calls the print_a label
+; then return from it to output 5
+
+call print_a
+
+sub ax, ax
+inc ax
+mov bx, 5
+add bx, 48 ; Adds the '0' value to the start
+syscall
+
+mov bx, 10
+syscall
+
+sub ax, ax
+syscall
+
+
+print_a:
+    mov ax, 1
+    mov bx, 97
+    syscall
+
+    mov ax, 1
+    mov bx, 10
+    syscall 
+    
+    ret

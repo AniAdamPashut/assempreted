@@ -1,7 +1,9 @@
 #include "opcodes.hpp"
-#include "exceptions.hpp"
 
 #include <iostream>
+
+#include "exceptions.hpp"
+#include "syscalls.hpp"
 
 
 // Function to trim whitespace from the beginning of a string
@@ -197,7 +199,17 @@ void dec(State &state, std::string line) {
 
 
 void call(State &state, std::string line) {
-    
+    state.stk.push(state.pc);
+    state.call_stack.push(state.stk.size());
+
+    std::string value = trim(line.substr(line.find(' '), line.length()));
+
+    if (state.label_map.contains(value)) {
+        state.pc = state.label_map[value];
+        return;
+    }
+
+    throw parse_error("Can't call non label code");
 }
 
 void jmp(State &state, std::string line) {
@@ -225,7 +237,20 @@ void jmp(State &state, std::string line) {
     }
 }
 
-void ret(State &state, std::string line) {}
+void ret(State &state, std::string line) {
+    if (state.call_stack.size() == 0) {
+        return;
+    }
+
+    while (state.stk.size() > state.call_stack.top()) {
+        state.stk.pop();
+    }
+    if (state.stk.size() > 0) {
+        state.pc = state.stk.top();
+        state.stk.pop();
+    }
+    state.call_stack.pop();
+}
 
 void je(State &state, std::string line) {
     std::string value = trim(line.substr(line.find(' '), line.length()));
@@ -255,7 +280,13 @@ void je(State &state, std::string line) {
     }
 }
 
-void syscall(State &state, std::string line) {} 
+void syscall(State &state, std::string line) {
+    if (state.registers["ax"] > SYSCALL_AMOUNT) {
+        throw parse_error("INVALID SYSCALL NUMBER: " + state.registers["ax"]);
+    }
+ 
+    syscall_array.at(state.registers["ax"]) (state);
+} 
 
 void cmp(State &state, std::string line) {
     size_t first_space = line.find(' ');
@@ -294,6 +325,4 @@ void cmp(State &state, std::string line) {
     state.flags["EF"] = diff == 0;
     state.flags["BF"] = diff > 0;
     state.flags["LF"] = diff < 0;
-
-    std::cout << "EF is " << state.flags["EF"] << "\n";
 }

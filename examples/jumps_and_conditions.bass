@@ -1,0 +1,23 @@
+; this one demonstrates loops
+; simply print each letter of the alphabet
+
+mov bx, 97 ; The first letter of the alphabet
+mov ax, 1 ; The right syscall
+sub cx, cx ; initialize loop count
+
+loop:
+cmp cx, 26 ; Did we finish printing?
+je done ; Clean up
+
+syscall ; print current 
+
+inc cx ; update counter
+inc bx ; go to next letter 
+jmp loop ; go back to the top of the loop
+
+done:
+mov bx, 10 ; print a new line
+syscall
+
+mov ax, 0 ; exit peacefully 
+syscall ; (yes we can just let file end naturally)

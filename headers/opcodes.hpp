@@ -7,8 +7,6 @@
 
 #include "state.hpp"
 
-std::string ltrim(const std::string &str);
-
 std::string trim(const std::string &str);
 
 void push(State& state, std::string line);

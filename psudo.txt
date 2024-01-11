@@ -1,8 +1,0 @@
-interperter,
-just executes shit every single line 
-
-
-support for basic mnemonics like mov, add, sub, inc and shit
-support for syscall
-
-just have literal 32-bit integers like ax, bx, n shit
