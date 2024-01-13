@@ -36,7 +36,7 @@ void push(State &state, std::string line) {
         state.stk.push(literal);
     }
     catch (std::invalid_argument exe) {
-        throw parse_error("cannot determine value of:" + value + ":");
+        throw parse_error("cannot literal value of:" + value + ":");
     }
 }
 
@@ -59,16 +59,16 @@ void pop(State &state, std::string line) {
 void mov(State &state, std::string line) {
     size_t first_space = line.find(' ');
     if (first_space == std::string::npos) {
-        throw parse_error("Hey yo didn't I ask you to specify args with mov mnemonic?");
+        throw parse_error("This opcode takes 2 argument as (dest, src)");
     }
     std::string args = trim(line.substr(first_space, line.length()));
     size_t comma = args.find(',');
     if (comma == std::string::npos) {
-        throw parse_error("I ALSO REQUIRED YOU TO PLACE A COMMA BETWEEN THEM DIDN'T I????");
+        throw parse_error("separate them with a comma please");
     }
     std::string first = trim(args.substr(0, comma));
     if (!state.registers.contains(first)) {
-        throw parse_error("MAN DONT TRY TO MOV INTO A NON REGISTER WTF IS WRONG WITH YOU??");
+        throw parse_error("destination can't be non register");
     }
 
     std::string second = trim(args.substr(comma + 1, args.length()));
@@ -79,10 +79,10 @@ void mov(State &state, std::string line) {
             value = std::stoi(second);
         }
         catch (std::invalid_argument err) {
-            throw parse_error("MAN JUST TRY TO MOV A REGISTER OR A LITERAL NOT JUST WEIRD SHIT\n");
+            throw parse_error("Can't recognize the source to move from, prob typo.\n");
         }
         catch (std::out_of_range err) {
-            throw parse_error("PLEASE ENTER A FUCKING 32-BIT INTEGER");
+            throw parse_error("integer might be bigger than 32-bit");
         }
     }
     else {
@@ -93,18 +93,18 @@ void mov(State &state, std::string line) {
 }
 
 void add(State &state, std::string line) {
-    size_t first_space = line.find(' ');
+     size_t first_space = line.find(' ');
     if (first_space == std::string::npos) {
-        throw parse_error("Hey yo didn't I ask you to specify args with mov mnemonic?");
+        throw parse_error("This opcode takes 2 argument as (dest, src)");
     }
     std::string args = trim(line.substr(first_space, line.length()));
     size_t comma = args.find(',');
     if (comma == std::string::npos) {
-        throw parse_error("I ALSO REQUIRED YOU TO PLACE A COMMA BETWEEN THEM DIDN'T I????");
+        throw parse_error("separate them with a comma please");
     }
     std::string first = trim(args.substr(0, comma));
     if (!state.registers.contains(first)) {
-        throw parse_error("MAN DONT TRY TO MOV INTO A NON REGISTER WTF IS WRONG WITH YOU??");
+        throw parse_error("destination can't be non register");
     }
 
     std::string second = trim(args.substr(comma + 1, args.length()));
@@ -115,10 +115,10 @@ void add(State &state, std::string line) {
             value = std::stoi(second);
         }
         catch (std::invalid_argument err) {
-            throw parse_error("MAN JUST TRY TO MOV A REGISTER OR A LITERAL NOT JUST WEIRD SHIT\n");
+            throw parse_error("Can't recognize the source to move from, prob typo.\n");
         }
         catch (std::out_of_range err) {
-            throw parse_error("PLEASE ENTER A FUCKING 32-BIT INTEGER");
+            throw parse_error("integer might be bigger than 32-bit");
         }
     }
     else {
@@ -131,16 +131,16 @@ void add(State &state, std::string line) {
 void sub(State &state, std::string line) {
     size_t first_space = line.find(' ');
     if (first_space == std::string::npos) {
-        throw parse_error("Hey yo didn't I ask you to specify args with mov mnemonic?");
+        throw parse_error("This opcode takes 2 argument as (dest, src)");
     }
     std::string args = trim(line.substr(first_space, line.length()));
     size_t comma = args.find(',');
     if (comma == std::string::npos) {
-        throw parse_error("I ALSO REQUIRED YOU TO PLACE A COMMA BETWEEN THEM DIDN'T I????");
+        throw parse_error("separate them with a comma please");
     }
     std::string first = trim(args.substr(0, comma));
     if (!state.registers.contains(first)) {
-        throw parse_error("MAN DONT TRY TO MOV INTO A NON REGISTER WTF IS WRONG WITH YOU??");
+        throw parse_error("destination can't be non register");
     }
 
     std::string second = trim(args.substr(comma + 1, args.length()));
@@ -151,10 +151,10 @@ void sub(State &state, std::string line) {
             value = std::stoi(second);
         }
         catch (std::invalid_argument err) {
-            throw parse_error("MAN JUST TRY TO MOV A REGISTER OR A LITERAL NOT JUST WEIRD SHIT\n");
+            throw parse_error("Can't recognize the source to move from, prob typo.\n");
         }
         catch (std::out_of_range err) {
-            throw parse_error("PLEASE ENTER A FUCKING 32-BIT INTEGER");
+            throw parse_error("integer might be bigger than 32-bit");
         }
     }
     else {
@@ -290,30 +290,30 @@ void syscall(State &state, std::string line) {
 void cmp(State &state, std::string line) {
     size_t first_space = line.find(' ');
     if (first_space == std::string::npos) {
-        throw parse_error("Hey yo didn't I ask you to specify args with cmp mnemonic?");
+        throw parse_error("This opcode takes 2 argument as (dest, src)");
     }
-
     std::string args = trim(line.substr(first_space, line.length()));
     size_t comma = args.find(',');
     if (comma == std::string::npos) {
-        throw parse_error("I ALSO REQUIRED YOU TO PLACE A COMMA BETWEEN THEM DIDN'T I????");
+        throw parse_error("separate them with a comma please");
     }
     std::string first = trim(args.substr(0, comma));
     if (!state.registers.contains(first)) {
-        throw parse_error("MAN DONT TRY TO MOV INTO A NON REGISTER WTF IS WRONG WITH YOU??");
+        throw parse_error("destination can't be non register");
     }
 
     std::string second = trim(args.substr(comma + 1, args.length()));
+
     int value;
     if (!state.registers.contains(second)) {
         try {
             value = std::stoi(second);
         }
         catch (std::invalid_argument err) {
-            throw parse_error("MAN JUST TRY TO MOV A REGISTER OR A LITERAL NOT JUST WEIRD SHIT\n");
+            throw parse_error("Can't recognize the source to move from, prob typo.\n");
         }
         catch (std::out_of_range err) {
-            throw parse_error("PLEASE ENTER A FUCKING 32-BIT INTEGER");
+            throw parse_error("integer might be bigger than 32-bit");
         }
     }
     else {
