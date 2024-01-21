@@ -1,5 +1,6 @@
 ; This one demonstrate calls and returns
 ; it calls the print_a label
+; which calls the print_b label
 ; then return from it to output 5
 
 call print_a

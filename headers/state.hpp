@@ -9,8 +9,7 @@
 #include <unordered_map>
 
 
-class State {
-public:
+struct State {
     uint32_t pc;
 
     std::stack<int> stk;

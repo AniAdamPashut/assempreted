@@ -1,6 +1,7 @@
 #include "opcodes.hpp"
 
 #include <iostream>
+#include <tuple>
 
 #include "exceptions.hpp"
 
@@ -22,6 +23,41 @@ std::string trim(const std::string& s) {
     return rtrim(ltrim(s));
 }
 
+
+std::tuple<std::string, std::string> parse2(State &state, std::string line) {
+    size_t first_space = line.find(' ');
+    if (first_space == std::string::npos) {
+        throw parse_error("This opcode takes 2 argument as (dest, src)");
+    }
+    std::string args = trim(line.substr(first_space, line.length()));
+    size_t comma = args.find(',');
+    if (comma == std::string::npos) {
+        throw parse_error("separate them with a comma please");
+    }
+    std::string first = trim(args.substr(0, comma));
+    if (!state.registers.contains(first)) {
+        throw parse_error("destination can't be non register");
+    }
+
+    std::string second = trim(args.substr(comma + 1, args.length()));
+
+    return std::tuple(first, second);
+}
+
+int get_literal_or_register_value(State &state, std::string token) {
+    if (state.registers.contains(token)) {
+        return state.registers.at(token);
+    }
+    try {
+        return std::stoi(token);
+    }
+    catch (std::invalid_argument err) {
+        throw parse_error("Can't recognize the source to move from, prob typo.\n");
+    }
+    catch (std::out_of_range err) {
+        throw parse_error("integer might be bigger than 32-bit");
+    }
+}
 
 void push(State &state, std::string line) {
     std::string value = trim(line.substr(line.find(' '), line.length()));
@@ -57,109 +93,25 @@ void pop(State &state, std::string line) {
 }
 
 void mov(State &state, std::string line) {
-    size_t first_space = line.find(' ');
-    if (first_space == std::string::npos) {
-        throw parse_error("This opcode takes 2 argument as (dest, src)");
-    }
-    std::string args = trim(line.substr(first_space, line.length()));
-    size_t comma = args.find(',');
-    if (comma == std::string::npos) {
-        throw parse_error("separate them with a comma please");
-    }
-    std::string first = trim(args.substr(0, comma));
-    if (!state.registers.contains(first)) {
-        throw parse_error("destination can't be non register");
-    }
+    auto [first, second] = parse2(state, line);
 
-    std::string second = trim(args.substr(comma + 1, args.length()));
-
-    int value;
-    if (!state.registers.contains(second)) {
-        try {
-            value = std::stoi(second);
-        }
-        catch (std::invalid_argument err) {
-            throw parse_error("Can't recognize the source to move from, prob typo.\n");
-        }
-        catch (std::out_of_range err) {
-            throw parse_error("integer might be bigger than 32-bit");
-        }
-    }
-    else {
-        value = state.registers.at(second);
-    }
+    int value = get_literal_or_register_value(state, second);
 
     state.registers[first] = value;
 }
 
 void add(State &state, std::string line) {
-     size_t first_space = line.find(' ');
-    if (first_space == std::string::npos) {
-        throw parse_error("This opcode takes 2 argument as (dest, src)");
-    }
-    std::string args = trim(line.substr(first_space, line.length()));
-    size_t comma = args.find(',');
-    if (comma == std::string::npos) {
-        throw parse_error("separate them with a comma please");
-    }
-    std::string first = trim(args.substr(0, comma));
-    if (!state.registers.contains(first)) {
-        throw parse_error("destination can't be non register");
-    }
+    auto [first, second] = parse2(state, line);
 
-    std::string second = trim(args.substr(comma + 1, args.length()));
-
-    int value;
-    if (!state.registers.contains(second)) {
-        try {
-            value = std::stoi(second);
-        }
-        catch (std::invalid_argument err) {
-            throw parse_error("Can't recognize the source to move from, prob typo.\n");
-        }
-        catch (std::out_of_range err) {
-            throw parse_error("integer might be bigger than 32-bit");
-        }
-    }
-    else {
-        value = state.registers.at(second);
-    }
+    int value = get_literal_or_register_value(state, second);
 
     state.registers[first] += value;
 }
 
 void sub(State &state, std::string line) {
-    size_t first_space = line.find(' ');
-    if (first_space == std::string::npos) {
-        throw parse_error("This opcode takes 2 argument as (dest, src)");
-    }
-    std::string args = trim(line.substr(first_space, line.length()));
-    size_t comma = args.find(',');
-    if (comma == std::string::npos) {
-        throw parse_error("separate them with a comma please");
-    }
-    std::string first = trim(args.substr(0, comma));
-    if (!state.registers.contains(first)) {
-        throw parse_error("destination can't be non register");
-    }
+    auto [first, second] = parse2(state, line);
 
-    std::string second = trim(args.substr(comma + 1, args.length()));
-
-    int value;
-    if (!state.registers.contains(second)) {
-        try {
-            value = std::stoi(second);
-        }
-        catch (std::invalid_argument err) {
-            throw parse_error("Can't recognize the source to move from, prob typo.\n");
-        }
-        catch (std::out_of_range err) {
-            throw parse_error("integer might be bigger than 32-bit");
-        }
-    }
-    else {
-        value = state.registers.at(second);
-    }
+    int value = get_literal_or_register_value(state, second);
 
     state.registers[first] -= value;
 }
@@ -288,37 +240,9 @@ void syscall(State &state, std::string line) {
 } 
 
 void cmp(State &state, std::string line) {
-    size_t first_space = line.find(' ');
-    if (first_space == std::string::npos) {
-        throw parse_error("This opcode takes 2 argument as (dest, src)");
-    }
-    std::string args = trim(line.substr(first_space, line.length()));
-    size_t comma = args.find(',');
-    if (comma == std::string::npos) {
-        throw parse_error("separate them with a comma please");
-    }
-    std::string first = trim(args.substr(0, comma));
-    if (!state.registers.contains(first)) {
-        throw parse_error("destination can't be non register");
-    }
+    auto [first, second] = parse2(state, line);
 
-    std::string second = trim(args.substr(comma + 1, args.length()));
-
-    int value;
-    if (!state.registers.contains(second)) {
-        try {
-            value = std::stoi(second);
-        }
-        catch (std::invalid_argument err) {
-            throw parse_error("Can't recognize the source to move from, prob typo.\n");
-        }
-        catch (std::out_of_range err) {
-            throw parse_error("integer might be bigger than 32-bit");
-        }
-    }
-    else {
-        value = state.registers.at(second);
-    }
+    int value = get_literal_or_register_value(state, second);
 
     int diff = state.registers[first] - value;
     state.flags["EF"] = diff == 0;
