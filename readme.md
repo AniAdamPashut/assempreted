@@ -15,7 +15,7 @@ This works with a state class that holds the registers the stack and the program
 ## To run:
 - `make init`
 - `make`
-- `./assembler ./examples/xxx.bass`
+- `./assempreter ./examples/xxx.bass`
 
 ## opcodes implemented:
 - push, pop
